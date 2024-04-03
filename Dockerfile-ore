@@ -2,7 +2,7 @@ FROM debian:latest
 ENV PATH "$PATH:/root/.cargo/bin"
 WORKDIR /app
 RUN apt-get -y update &&\
-    apt-get install -y git gcc &&\
+    apt-get install -y git curl gcc &&\
     curl https://sh.rustup.rs -sSf | sh -s -- -y &&\
     git clone https://github.com/HardhatChad/ore-cli.git &&\
     cd ore-cli &&\
