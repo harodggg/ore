@@ -17,7 +17,7 @@ spec:
       containers:
       - name: ore
         image: axelharold/ore:main
-        args: [ "--priority-fee" "500" "--keypair" "/config/l.json" "mine" "--threads" "2"]
+        command: ["/app/ore", "--priority-fee", "500", "--keypair", "/config/l.json", "mine", "--threads", "2"]
         resources:
           limits:
             cpu: "4"
