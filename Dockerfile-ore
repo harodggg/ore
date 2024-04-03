@@ -10,6 +10,7 @@ RUN apt-get -y update &&\
     git checkout pr4 &&\
     cargo build --release &&\
     # mv ./target/release/ore /app
+ENTRYPOINT /app/ore
 
 # FROM debian:latest as prod
 # WORKDIR /a
