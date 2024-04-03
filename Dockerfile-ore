@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:latest as builder
 ENV PATH "$PATH:/root/.cargo/bin"
 WORKDIR /app
 RUN apt-get -y update &&\
@@ -10,5 +10,10 @@ RUN apt-get -y update &&\
     git checkout pr4 &&\
     cargo build --release &&\
     mv ./target/release/ore /app
-COPY ./ /app
+
+FROM debian:latest as prod
+WORKDIR /app
+COPY --from=0 /app/ore .
 ENTRYPOINT /app/ore
+
+
