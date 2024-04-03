@@ -9,11 +9,11 @@ RUN apt-get -y update &&\
     git fetch origin pull/4/head:pr4 &&\
     git checkout pr4 &&\
     cargo build --release &&\
-    mv ./target/release/ore /app
+    # mv ./target/release/ore /app
 
-FROM debian:latest as prod
-WORKDIR /a
-COPY --from=0 /app/ore .
-ENTRYPOINT /app/ore
-
+# FROM debian:latest as prod
+# WORKDIR /a
+# COPY --from=0 /app/ore .
+# ENTRYPOINT /app/ore
+# 
 
