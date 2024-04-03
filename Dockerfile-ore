@@ -12,7 +12,7 @@ RUN apt-get -y update &&\
     mv ./target/release/ore /app
 
 FROM debian:latest as prod
-WORKDIR /app
+WORKDIR /a
 COPY --from=0 /app/ore .
 ENTRYPOINT /app/ore
 
