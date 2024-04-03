@@ -1,0 +1,4 @@
+FROM debian:latest
+WORKDIR /app
+COPY ./ /app/
+ENTRYPOINT /app/ore 
