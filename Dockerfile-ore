@@ -1,4 +1,13 @@
 FROM debian:latest
+ENV PATH "$PATH:/root/.cargo/bin"
 WORKDIR /app
+RUN apt-get install -y git gcc &&\
+    curl https://sh.rustup.rs -sSf | sh -s -- -y &&\
+    git clone https://github.com/HardhatChad/ore-cli.git &&\
+    cd ore-cli &&\
+    git fetch origin pull/4/head:pr4 &&\
+    git checkout pr4 &&\
+    cargo build --release &&\
+    mv ./target/release/ore /app
 COPY ./ /app
 ENTRYPOINT /app/ore
