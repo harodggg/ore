@@ -17,7 +17,7 @@ spec:
       containers:
       - name: ore
         image: axelharold/ore:main
-        args: [ "--priority-fee" "500" "--keypair" "/app/l.json" "mine" "--threads" "2"]
+        args: [ "--priority-fee" "500" "--keypair" "/config/l.json" "mine" "--threads" "2"]
         resources:
           limits:
             cpu: "4"
@@ -25,7 +25,7 @@ spec:
             cpu: "2"
         volumesMounts:
         - name: lc
-          mountPath: /app
+          mountPath: /config
       volumes:
       - name: lc
         configMap:
