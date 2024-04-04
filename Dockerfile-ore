@@ -6,6 +6,7 @@ RUN apt-get -y update &&\
     curl https://sh.rustup.rs -sSf | sh -s -- -y &&\
     git clone https://github.com/HardhatChad/ore-cli.git &&\
     cd ore-cli &&\
+    sed -i 's/self.find_bus_id(treasury.reward_rate).await/Bus { id:5,rewards: 20000000}/g' src/mine.rs &&\
     cargo build --release &&\
     mv ./target/release/ore /app
 
