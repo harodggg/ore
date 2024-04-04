@@ -12,6 +12,6 @@ RUN apt-get -y update &&\
 FROM debian:latest as prod
 WORKDIR /app
 COPY --from=0 /app/ore .
-ENTRYPOINT /app/ore
+ENTRYPOINT ["/app/ore","--keypair","/app/l.json"]
 
 
