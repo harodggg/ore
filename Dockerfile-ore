@@ -9,7 +9,7 @@ RUN apt-get -y update &&\
     sed -i 's/self.find_bus_id(treasury.reward_rate).await/Bus { id:5,rewards: 20000000}/g' src/mine.rs &&\
     sed -i 's/u32 = 3200/u32 = 100000/g' src/cu_limits.rs &&\
     sed -i 's/u32 = 12_200/u32 = 120_200/g' src/cu_limits.rs &&\
-    sed -i 's/, false/, true)/g' src/mine.rs &&\
+    sed -i 's/, false/, true/g' src/mine.rs &&\
     cargo build --release &&\
     mv ./target/release/ore /app
 
