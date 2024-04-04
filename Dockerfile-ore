@@ -6,9 +6,6 @@ RUN apt-get -y update &&\
     curl https://sh.rustup.rs -sSf | sh -s -- -y &&\
     git clone https://github.com/HardhatChad/ore-cli.git &&\
     cd ore-cli &&\
-    git fetch origin pull/4/head:pr4 &&\
-    git checkout pr4 &&\
-    sed -ie 's/bus_id = 0/bus_id = 5/g' src/mine.rs &&\
     cargo build --release &&\
     mv ./target/release/ore /app
 
