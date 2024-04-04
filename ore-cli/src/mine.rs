@@ -34,8 +34,13 @@ impl Miner {
             // Fetch account state
             let treasury = get_treasury(self.cluster.clone()).await;
             let proof = get_proof(self.cluster.clone(), signer.pubkey()).await;
+            let rewards =
+                (proof.claimable_rewards as f64) / (10f64.powf(ore::TOKEN_DECIMALS as f64));
+            let reward_rate =
+                (treasury.reward_rate as f64) / (10f64.powf(ore::TOKEN_DECIMALS as f64));
             stdout.write_all(b"\x1b[2J\x1b[3J\x1b[H").ok();
-            
+            println!("Claimable: {} ORE", rewards);
+            println!("Reward rate: {} ORE", reward_rate);
 
             // Escape sequence that clears the screen and the scrollback buffer
             println!("\nMining for a valid hash...");
@@ -90,6 +95,17 @@ impl Miner {
         }
     }
 
+    async fn find_bus_id(&self, reward_rate: u64) -> Bus {
+        let mut rng = rand::thread_rng();
+        loop {
+            let bus_id = rng.gen_range(0..BUS_COUNT);
+            if let Ok(bus) = self.get_bus(bus_id).await {
+                if bus.rewards.gt(&reward_rate.saturating_mul(4)) {
+                    return bus;
+                }
+            }
+        }
+    }
 
     fn _find_next_hash(&self, hash: KeccakHash, difficulty: KeccakHash) -> (KeccakHash, u64) {
         let signer = self.signer();
