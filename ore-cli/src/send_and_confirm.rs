@@ -18,7 +18,7 @@ use solana_transaction_status::{TransactionConfirmationStatus, UiTransactionEnco
 
 use crate::Miner;
 
-const RPC_RETRIES: usize = 100;
+const RPC_RETRIES: usize = 20;
 const GATEWAY_RETRIES: usize = 4;
 const CONFIRM_RETRIES: usize = 4;
 
@@ -31,12 +31,12 @@ impl Miner {
         let mut stdout = stdout();
         let signer = self.signer();
         let client =
-            RpcClient::new_with_commitment(self.cluster.clone(), CommitmentConfig::confirmed());
+            RpcClient::new_with_commitment(self.cluster.clone(), CommitmentConfig::processed());
 
 
         // Build tx
         let (mut hash, mut slot) = client
-            .get_latest_blockhash_with_commitment(CommitmentConfig::confirmed())
+            .get_latest_blockhash_with_commitment(CommitmentConfig::processed())
             .await
             .unwrap();
         let mut send_cfg = RpcSendTransactionConfig {
@@ -53,18 +53,18 @@ impl Miner {
         let mut sigs = vec![];
         let mut attempts = 0;
         loop {
-            println!("Attempt: {:?}", attempts);
+            println!("开始提交交易{:?}", attempts);
             match client.send_transaction_with_config(&tx, send_cfg).await {
                 Ok(sig) => {
                     sigs.push(sig);
-                    println!("{:?}", sig);
+                    println!("交易提交成功{:?}", sig);
 
                     // Confirm tx
                     if skip_confirm {
                         return Ok(sig);
                     }
                     for _ in 0..CONFIRM_RETRIES {
-                        std::thread::sleep(Duration::from_millis(2000));
+                        std::thread::sleep(Duration::from_millis(1000));
                         match client.get_signature_statuses(&sigs).await {
                             Ok(signature_statuses) => {
                                 println!("Confirms: {:?}", signature_statuses.value);
@@ -76,7 +76,7 @@ impl Miner {
                                                 .as_ref()
                                                 .unwrap();
                                             match current_commitment {
-                                                TransactionConfirmationStatus::Processed => {}
+                                                TransactionConfirmationStatus::Processed => {println!{"交易正在处理"}}
                                                 TransactionConfirmationStatus::Confirmed
                                                 | TransactionConfirmationStatus::Finalized => {
                                                     println!("Transaction landed!");
@@ -96,7 +96,7 @@ impl Miner {
                             }
                         }
                     }
-                    println!("Transaction did not land");
+                    println!("Transaction 状态未知");
                 }
 
                 // Handle submit errors

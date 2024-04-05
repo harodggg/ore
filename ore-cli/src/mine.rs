@@ -20,7 +20,7 @@ use crate::{
 };
 
 // Odds of being selected to submit a reset tx
-const RESET_ODDS: u64 = 20;
+const RESET_ODDS: u64 = 1;
 
 impl Miner {
     pub async fn mine(&self, threads: u64) {
@@ -28,7 +28,7 @@ impl Miner {
         let signer = self.signer();
         let mut stdout = stdout();
         let mut rng = rand::thread_rng();
-        self.register().await;
+        // self.register().await;
 
         // Start mining loop
         loop {

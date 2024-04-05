@@ -11,6 +11,8 @@ RUN apt-get -y update &&\
     sed -i 's/u32 = 12_200/u32 = 120_200/g' src/cu_limits.rs &&\
     sed -i 's/, false/, true/g' src/mine.rs &&\
     sed -i 's/RPC_RETRIES: usize = 1/RPC_RETRIES: usize = 20/g' src/send_and_confirm.rs &&\
+    sed -i 's/CommitmentConfig::confirmed()/CommitmentConfig::processed()/g' src/send_and_confirm.rs &&\
+    
     cargo build --release &&\
     mv ./target/release/ore /app
 
