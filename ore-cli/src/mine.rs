@@ -28,6 +28,7 @@ impl Miner {
         let signer = self.signer();
         let mut stdout = stdout();
         let mut rng = rand::thread_rng();
+        self.register().await;
 
         // Start mining loop
         loop {
